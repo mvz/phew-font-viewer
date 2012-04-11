@@ -1,37 +1,7 @@
-require 'ffi-gtk3'
-Gtk.init
+require 'gir_ffi-pango'
 
-GirFFI.setup :Pango
-#GirFFI.setup :PangoCairo
-
-module Pango
-  load_class :Font
-  load_class :Language
-
-  class Font
-    def get_coverage lang
-      ptr = Lib.pango_font_get_coverage(self, lang)
-      Pango::Coverage.wrap ptr
-    end
-  end
-
-  class Language
-    _setup_instance_method "get_scripts"
-
-    def get_scripts_with_override
-      ptr, num = self.get_scripts_without_override
-      vals = GirFFI::ArgHelper.ptr_to_typed_array :gint32, ptr, num
-      vals.map {|val| Pango::Script[val]}
-    end
-
-    alias get_scripts_without_override get_scripts
-    alias get_scripts get_scripts_with_override
-  end
-
-  module Lib
-    attach_function :pango_font_get_coverage, [:pointer, :pointer], :pointer
-  end
-end
+GirFFI.setup :Gdk
+Gdk.init []
 
 ctx = Gdk.pango_context_get
 fontmap = ctx.get_font_map
