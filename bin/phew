@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require 'ffi-gtk3'
+
+Gtk.init
+GLib.timeout_add 0, 1000, Proc.new {Gtk.main_quit}, nil, nil
+Gtk.main
