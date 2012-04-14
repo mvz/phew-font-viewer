@@ -16,11 +16,20 @@ def find_app name
   return nil
 end
 
+def each_child acc
+  cnt = acc.child_count
+
+  (0..cnt-1).reverse_each do |i|
+    child = acc.get_child_at_index i
+    yield child
+  end
+end
+
 def try_repeatedly
   10.times.each do |num|
     result = yield
     return result if result
-    sleep_time = 0.05 + 0.05 * (num)**1.5
+    sleep_time = 0.01 * (num + 1)
     sleep sleep_time
   end
   yield
@@ -55,18 +64,20 @@ describe "The Phew application" do
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
   end
 
-  it "starts and then stops" do
+  it "starts and can be quit with Ctrl-q" do
     status = running_command "ruby #@app_file" do
-      # nothing to do
-    end
-
-    status.exitstatus.must_equal 0
-  end
-
-  it "starts and then can be accessed with Atspi" do
-    running_command "ruby #@app_file" do
       acc = try_repeatedly { find_app "phew" }
       acc.wont_be_nil
+
+      frame = acc.get_child_at_index 0
+      frame.role.must_equal :frame
+
+      frame.grab_focus
+      sleep 0.01
+      Atspi.generate_keyboard_event(37, nil, :press)
+      Atspi.generate_keyboard_event(24, nil, :pressrelease)
+      Atspi.generate_keyboard_event(37, nil, :release)
     end
+    status.exitstatus.must_equal 0
   end
 end

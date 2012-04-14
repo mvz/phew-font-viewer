@@ -2,5 +2,20 @@
 require 'ffi-gtk3'
 
 Gtk.init
-GLib.timeout_add 0, 1000, Proc.new {Gtk.main_quit}, nil, nil
+win = Gtk::Window.new :toplevel
+
+win.signal_connect "destroy" do
+  Gtk.main_quit
+  false
+end
+
+win.signal_connect 'key-press-event' do |wdg, evt, ud|
+  if evt.state == :control_mask and evt.keyval == "q".ord
+    win.destroy
+  end
+  false
+end
+
+
+win.show
 Gtk.main
