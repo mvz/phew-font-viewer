@@ -16,6 +16,15 @@ def find_app name
   nil
 end
 
+def find_role acc, role
+  return acc if role == acc.role
+  each_child acc do |child|
+    result = find_role child, role
+    return result if result
+  end
+  nil
+end
+
 def try_repeatedly
   10.times.each do |num|
     result = yield
@@ -39,28 +48,46 @@ class PhewDriver
     @killed = false
   end
 
-  def boot timeout=3
+  def boot timeout=10
     raise "Already booted" if @pid
     @pid = Process.spawn "ruby #@app_file"
 
     @killed = false
+    @cleanup = false
 
     Thread.new do
-      sleep timeout
-      @killed = true if pid
+      (timeout * 10).times do
+        break if @cleanup
+        sleep 0.1
+      end
+
+      @killed = true if @pid
       Process.kill "TERM", @pid if @pid
-      sleep 1 if @pid
+      sleep 0.2 if @pid
       Process.kill "KILL", @pid if @pid
     end
   end
 
-  def cleanup expected_status = 0
+  def cleanup
     return unless @pid
+    @cleanup = true
     _, status = Process.wait2 @pid
     @pid = nil
-    @killed.must_equal false
-    status.exitstatus.must_equal 0
+    return status
   end
+
+  def get_and_focus_frame
+    acc = try_repeatedly { find_app "phew" }
+    acc.wont_be_nil
+
+    frame = acc.get_child_at_index 0
+    frame.role.must_equal :frame
+    frame.grab_focus
+    sleep 0.01
+
+    return frame
+  end
+
 end
 
 describe "The Phew application" do
@@ -70,14 +97,18 @@ describe "The Phew application" do
   end
 
   it "starts and can be quit with Ctrl-q" do
-    acc = try_repeatedly { find_app "phew" }
-    acc.wont_be_nil
+    @driver.get_and_focus_frame
 
-    frame = acc.get_child_at_index 0
-    frame.role.must_equal :frame
-    frame.grab_focus
-    sleep 0.01
+    press_ctrl_q
+    status = @driver.cleanup
+    status.exitstatus.must_equal 0
+  end
 
+  it "shows a dropdown list of scripts" do
+    frame = @driver.get_and_focus_frame
+
+    box = find_role frame, :combo_box
+    box.wont_be_nil
     press_ctrl_q
   end
 
