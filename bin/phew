@@ -27,5 +27,21 @@ Pango::Script.symbols.each do |script|
   combo.append str, str
 end
 
-win.show
+textview = Gtk::TextView.new
+vbox.pack_start textview, false, false, 0
+
+textbuffer = textview.buffer
+
+combo.signal_connect 'changed' do
+  script = combo.active_text.to_sym
+  lang = Pango.script_get_sample_language script
+
+  unless lang.nil?
+    textbuffer.text = lang.get_sample_string
+  end
+end
+
+
+win.show_all
+
 Gtk.main

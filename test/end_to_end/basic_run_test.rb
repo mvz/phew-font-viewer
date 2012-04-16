@@ -4,26 +4,39 @@ require 'gir_ffi'
 
 GirFFI.setup :Atspi
 
-def each_child acc
-  acc.child_count.times do |i|
-    yield acc.get_child_at_index i
+module Atspi
+  load_class :Accessible
+
+  class Accessible
+    def each_child
+      child_count.times do |i|
+        yield get_child_at_index i
+      end
+    end
+
+    def find_role role, regex=//
+      return self if role == self.role and self.name =~ regex
+      self.each_child do |child|
+        result = child.find_role role, regex
+        return result if result
+      end
+      nil
+    end
+
+    def inspect_recursive level=0, maxlevel=4
+      each_child do |child|
+        puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}"
+        child.inspect_recursive(level + 1) unless level >= maxlevel
+      end
+    end
   end
 end
 
 def find_app name
   desktop = Atspi.get_desktop(0)
-  each_child(desktop) do |child|
+  desktop.each_child do |child|
     next if child.nil?
     return child if child.name == name
-  end
-  nil
-end
-
-def find_role acc, role
-  return acc if role == acc.role
-  each_child acc do |child|
-    result = find_role child, role
-    return result if result
   end
   nil
 end
@@ -44,6 +57,28 @@ def press_ctrl_q
   Atspi.generate_keyboard_event(37, nil, :release)
 end
 
+class ActionWrapper < GObject::Object
+  include Atspi::Action
+end
+
+class TextWrapper < GObject::Object
+  include Atspi::Text
+end
+
+def get_action_wrapped acc
+  act = acc.action
+  unless act.nil?
+    ActionWrapper.wrap(act.to_ptr)
+  end
+end
+
+def get_text_wrapped acc
+  act = acc.text
+  unless act.nil?
+    TextWrapper.wrap(act.to_ptr)
+  end
+end
+
 class PhewDriver
   def initialize
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
@@ -59,12 +94,15 @@ class PhewDriver
     @cleanup = false
 
     Thread.new do
-      (timeout * 10).times do
+      ((timeout - 1) * 10).times do
         break if @cleanup
         sleep 0.1
       end
 
-      sleep 0.1
+      10.times do
+        break unless @pid
+        sleep 0.1
+      end
 
       if @pid
         warn "About to kill child process #@pid"
@@ -106,7 +144,7 @@ describe "The Phew application" do
     @driver.get_and_focus_frame
 
     press_ctrl_q
-    sleep 0.1
+    sleep 0.5
 
     status = @driver.cleanup
     status.exitstatus.must_equal 0
@@ -115,15 +153,24 @@ describe "The Phew application" do
   it "shows a dropdown list of scripts" do
     frame = @driver.get_and_focus_frame
 
-    box = find_role frame, :combo_box
+    box = frame.find_role :combo_box
 
-    names = []
-    each_child box do |child|
-      each_child child do |gc|
-        names << gc.name
-      end
-    end
-    names.must_include "latin"
+    latin = box.find_role :menu_item, /latin/
+    latin.wont_be_nil
+
+    textbox = frame.find_role :text
+    textbox.wont_be_nil
+    text = get_text_wrapped textbox
+    text.get_text(0, 100).must_equal ""
+
+    act = get_action_wrapped(latin)
+    act.wont_be_nil
+    act.get_name(0).must_equal 'click'
+    act.do_action 0
+
+    text.get_text(0, 100).must_equal "The quick brown fox jumps over the lazy dog."
+
+    #frame.inspect_recursive
 
     press_ctrl_q
   end
