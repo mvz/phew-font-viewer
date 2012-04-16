@@ -12,7 +12,10 @@ end
 
 def find_app name
   desktop = Atspi.get_desktop(0)
-  each_child(desktop) {|child| return child if child.name == name }
+  each_child(desktop) do |child|
+    next if child.nil?
+    return child if child.name == name
+  end
   nil
 end
 
@@ -26,7 +29,7 @@ def find_role acc, role
 end
 
 def try_repeatedly
-  10.times.each do |num|
+  100.times.each do |num|
     result = yield
     return result if result
     sleep_time = 0.01 * (num + 1)
@@ -60,6 +63,8 @@ class PhewDriver
         break if @cleanup
         sleep 0.1
       end
+
+      sleep 0.1
 
       if @pid
         warn "About to kill child process #@pid"
