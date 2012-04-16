@@ -61,10 +61,11 @@ class PhewDriver
         sleep 0.1
       end
 
-      @killed = true if @pid
-      Process.kill "TERM", @pid if @pid
-      sleep 0.2 if @pid
-      Process.kill "KILL", @pid if @pid
+      if @pid
+        warn "About to kill child process #@pid"
+        @killed = true
+        Process.kill "KILL", @pid
+      end
     end
   end
 
@@ -100,6 +101,8 @@ describe "The Phew application" do
     @driver.get_and_focus_frame
 
     press_ctrl_q
+    sleep 0.1
+
     status = @driver.cleanup
     status.exitstatus.must_equal 0
   end
@@ -108,7 +111,15 @@ describe "The Phew application" do
     frame = @driver.get_and_focus_frame
 
     box = find_role frame, :combo_box
-    box.wont_be_nil
+
+    names = []
+    each_child box do |child|
+      each_child child do |gc|
+        names << gc.name
+      end
+    end
+    names.must_include "latin"
+
     press_ctrl_q
   end
 

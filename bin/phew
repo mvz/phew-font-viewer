@@ -16,6 +16,16 @@ win.signal_connect 'key-press-event' do |wdg, evt, ud|
   false
 end
 
+vbox = Gtk::VBox.new false, 0
+win.add vbox
+
+combo = Gtk::ComboBoxText.new
+vbox.pack_start combo, false, false, 0
+
+Pango::Script.symbols.each do |script|
+  str = script.to_s
+  combo.append str, str
+end
 
 win.show
 Gtk.main
