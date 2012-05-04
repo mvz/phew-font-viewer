@@ -78,11 +78,27 @@ module Phew
 
       vbox.pack_start combo, false, false, 0
       vbox.pack_start textview, false, false, 0
+      vbox.pack_start scriptlist, false, false, 0
       vbox
     end
 
     def vbox
       @vbox ||= build_vbox
+    end
+
+    def scriptlist
+      @scriptlist ||= Gtk::TreeView.new_with_model(scriptmodel).tap do |view|
+        renderer = Gtk::CellRendererText.new
+        col = Gtk::TreeViewColumn.new
+        col.set_title "Font Name"
+        col.pack_start renderer, true
+        col.add_attribute renderer, "text", 0
+        view.append_column col
+      end
+    end
+
+    def scriptmodel
+      @scriptmodel ||= Gtk::ListStore.new [GObject::TYPE_STRING]
     end
 
     def build_win
@@ -103,6 +119,9 @@ module Phew
 
     def initialize
       connect_signals
+
+      row = scriptmodel.append
+      scriptmodel.set_value row, 0, "Boo"
 
       win.show_all
     end
