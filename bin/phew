@@ -4,6 +4,23 @@ require 'ffi-gtk3'
 Gtk.init
 
 module Phew
+  # A script.
+  class Script
+    def initialize name
+      symbol = name.to_sym
+      @symbol = symbol
+      @lang = Pango.script_get_sample_language symbol
+    end
+
+    def sample_string
+      if @lang.nil?
+        "No sample available"
+      else
+        @lang.get_sample_string
+      end
+    end
+  end
+
   # Drop-down list of available scripts.
   class ScriptList < Gtk::ComboBoxText
     # FIXME: Should be able to fill inside #initialize
@@ -18,13 +35,8 @@ module Phew
     end
 
     def on_changed_signal buffer
-      script = active_text.to_sym
-      lang = Pango.script_get_sample_language script
-
-      unless lang.nil?
-        buffer.text = lang.get_sample_string
-      end
-      return lang
+      script = Script.new active_text.to_sym
+      buffer.text = script.sample_string
     end
   end
 
