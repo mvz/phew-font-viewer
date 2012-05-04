@@ -30,14 +30,6 @@ module Phew
         each {|str| self.append str, str}
     end
 
-    def connect_signals buffer
-      signal_connect('changed') { on_changed_signal buffer }
-    end
-
-    def on_changed_signal buffer
-      script = Script.new active_text.to_sym
-      buffer.text = script.sample_string
-    end
   end
 
   # Main Phew window
@@ -114,7 +106,12 @@ module Phew
     # Set up all signal handlers
     def connect_signals
       win.connect_signals
-      combo.connect_signals textview.buffer
+      combo.signal_connect('changed') { on_combo_changed_signal }
+    end
+
+    def on_combo_changed_signal
+      script = Script.new combo.active_text.to_sym
+      textview.buffer.text = script.sample_string
     end
 
     def initialize
