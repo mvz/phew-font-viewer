@@ -70,7 +70,7 @@ module Phew
 
       vbox.pack_start combo, false, false, 0
       vbox.pack_start textview, false, false, 0
-      vbox.pack_start scriptlist, false, false, 0
+      vbox.pack_start script_list_scroller, true, true, 0
       vbox
     end
 
@@ -78,8 +78,17 @@ module Phew
       @vbox ||= build_vbox
     end
 
-    def scriptlist
-      @scriptlist ||= Gtk::TreeView.new_with_model(scriptmodel).tap do |view|
+    def script_list_scroller
+      @script_list_scroller ||= Gtk::ScrolledWindow.new(nil, nil).tap do |scr|
+        lst = script_list
+        scr.add lst
+        lst.hadjustment = scr.hadjustment
+        lst.vadjustment = scr.vadjustment
+      end
+    end
+
+    def script_list
+      @script_list ||= Gtk::TreeView.new_with_model(scriptmodel).tap do |view|
         renderer = Gtk::CellRendererText.new
         col = Gtk::TreeViewColumn.new
         col.set_title "Font Name"
@@ -117,8 +126,13 @@ module Phew
     def initialize
       connect_signals
 
-      row = scriptmodel.append
-      scriptmodel.set_value row, 0, "Boo"
+      ctx = Gdk.pango_context_get
+      fontmap = ctx.get_font_map
+
+      fontmap.list_families.each do |fam|
+        row = scriptmodel.append
+        scriptmodel.set_value row, 0, fam.name
+      end
 
       win.show_all
     end
