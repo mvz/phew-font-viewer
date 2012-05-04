@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 require 'ffi-gtk3'
 
+Gtk.init
+
 module Phew
   # Drop-down list of available scripts.
   class ScriptList < Gtk::ComboBoxText
@@ -68,8 +70,6 @@ module Phew
     end
 
     def initialize
-      Gtk.init
-
       connect_signals
 
       win.show_all
