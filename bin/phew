@@ -2,19 +2,18 @@
 require 'ffi-gtk3'
 
 module Phew
-  class Application
-    def build_combo
-      combo = Gtk::ComboBoxText.new.tap |combo|
-
+  class ScriptList < Gtk::ComboBoxText
+    # FIXME: Should be able to fill inside #initialize
+    def fill
       Pango::Script.symbols.
-        map {|sym| sym.to_s }.
-        each {|str| combo.append str, str}
-
-      combo
+        map {|sym| sym.to_s}.
+        each {|str| self.append str, str}
     end
+  end
 
+  class Application
     def combo
-      @combo ||= build_combo
+      @combo ||= ScriptList.new.tap {|lst| lst.fill}
     end
 
     def textview
