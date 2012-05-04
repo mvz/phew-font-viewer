@@ -3,10 +3,47 @@ require 'ffi-gtk3'
 
 module Phew
   class Application
-    def run
-      Gtk.init
-      win = Gtk::Window.new :toplevel
+    def build_combo
+      combo = Gtk::ComboBoxText.new.tap |combo|
 
+      Pango::Script.symbols.
+        map {|sym| sym.to_s }.
+        each {|str| combo.append str, str}
+
+      combo
+    end
+
+    def combo
+      @combo ||= build_combo
+    end
+
+    def textview
+      @textview ||= Gtk::TextView.new
+    end
+
+    def build_vbox
+      vbox = Gtk::VBox.new false, 0
+
+      vbox.pack_start combo, false, false, 0
+      vbox.pack_start textview, false, false, 0
+      vbox
+    end
+
+    def vbox
+      @vbox ||= build_vbox
+    end
+
+    def build_win
+      win = Gtk::Window.new :toplevel
+      win.add vbox
+      win
+    end
+
+    def win
+      @win ||= build_win
+    end
+
+    def connect_signals
       win.signal_connect "destroy" do
         Gtk.main_quit
         false
@@ -19,34 +56,25 @@ module Phew
         false
       end
 
-      vbox = Gtk::VBox.new false, 0
-      win.add vbox
-
-      combo = Gtk::ComboBoxText.new
-      vbox.pack_start combo, false, false, 0
-
-      Pango::Script.symbols.each do |script|
-        str = script.to_s
-        combo.append str, str
-      end
-
-      textview = Gtk::TextView.new
-      vbox.pack_start textview, false, false, 0
-
-      textbuffer = textview.buffer
-
       combo.signal_connect 'changed' do
         script = combo.active_text.to_sym
         lang = Pango.script_get_sample_language script
 
         unless lang.nil?
-          textbuffer.text = lang.get_sample_string
+          textview.buffer.text = lang.get_sample_string
         end
       end
+    end
 
+    def initialize
+      Gtk.init
+
+      connect_signals
 
       win.show_all
+    end
 
+    def run
       Gtk.main
     end
   end
