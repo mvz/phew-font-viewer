@@ -12,6 +12,43 @@ module Phew
         map {|sym| sym.to_s}.
         each {|str| self.append str, str}
     end
+
+    def connect_signals buffer
+      signal_connect('changed') { on_changed_signal buffer }
+    end
+
+    def on_changed_signal buffer
+      script = active_text.to_sym
+      lang = Pango.script_get_sample_language script
+
+      unless lang.nil?
+        buffer.text = lang.get_sample_string
+      end
+      return lang
+    end
+  end
+
+  # Main Phew window
+  class Window < Gtk::Window
+    # Set up generic signal handlers for the window:
+    # - Closing the window ends the application
+    # - Pressing Ctrl-Q closes the window.
+    def connect_signals
+      signal_connect('destroy') { on_destroy_event }
+      signal_connect('key-press-event') { |_,evt,_| on_key_press_event evt }
+    end
+
+    def on_destroy_event
+      Gtk.main_quit
+      false
+    end
+
+    def on_key_press_event evt
+      if evt.state == :control_mask and evt.keyval == "q".ord
+        self.destroy
+      end
+      false
+    end
   end
 
   # Main Phew application.
@@ -37,7 +74,7 @@ module Phew
     end
 
     def build_win
-      win = Gtk::Window.new :toplevel
+      win = Window.new :toplevel
       win.add vbox
       win
     end
@@ -46,27 +83,10 @@ module Phew
       @win ||= build_win
     end
 
+    # Set up all signal handlers
     def connect_signals
-      win.signal_connect "destroy" do
-        Gtk.main_quit
-        false
-      end
-
-      win.signal_connect 'key-press-event' do |wdg, evt, ud|
-        if evt.state == :control_mask and evt.keyval == "q".ord
-          win.destroy
-        end
-        false
-      end
-
-      combo.signal_connect 'changed' do
-        script = combo.active_text.to_sym
-        lang = Pango.script_get_sample_language script
-
-        unless lang.nil?
-          textview.buffer.text = lang.get_sample_string
-        end
-      end
+      win.connect_signals
+      combo.connect_signals textview.buffer
     end
 
     def initialize
