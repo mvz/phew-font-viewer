@@ -2,6 +2,7 @@
 require 'ffi-gtk3'
 
 module Phew
+  # Drop-down list of available scripts.
   class ScriptList < Gtk::ComboBoxText
     # FIXME: Should be able to fill inside #initialize
     def fill
@@ -11,6 +12,7 @@ module Phew
     end
   end
 
+  # Main Phew application.
   class Application
     def combo
       @combo ||= ScriptList.new.tap {|lst| lst.fill}
