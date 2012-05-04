@@ -1,47 +1,55 @@
 #!/usr/bin/env ruby
 require 'ffi-gtk3'
 
-Gtk.init
-win = Gtk::Window.new :toplevel
+module Phew
+  class Application
+    def run
+      Gtk.init
+      win = Gtk::Window.new :toplevel
 
-win.signal_connect "destroy" do
-  Gtk.main_quit
-  false
-end
+      win.signal_connect "destroy" do
+        Gtk.main_quit
+        false
+      end
 
-win.signal_connect 'key-press-event' do |wdg, evt, ud|
-  if evt.state == :control_mask and evt.keyval == "q".ord
-    win.destroy
+      win.signal_connect 'key-press-event' do |wdg, evt, ud|
+        if evt.state == :control_mask and evt.keyval == "q".ord
+          win.destroy
+        end
+        false
+      end
+
+      vbox = Gtk::VBox.new false, 0
+      win.add vbox
+
+      combo = Gtk::ComboBoxText.new
+      vbox.pack_start combo, false, false, 0
+
+      Pango::Script.symbols.each do |script|
+        str = script.to_s
+        combo.append str, str
+      end
+
+      textview = Gtk::TextView.new
+      vbox.pack_start textview, false, false, 0
+
+      textbuffer = textview.buffer
+
+      combo.signal_connect 'changed' do
+        script = combo.active_text.to_sym
+        lang = Pango.script_get_sample_language script
+
+        unless lang.nil?
+          textbuffer.text = lang.get_sample_string
+        end
+      end
+
+
+      win.show_all
+
+      Gtk.main
+    end
   end
-  false
 end
 
-vbox = Gtk::VBox.new false, 0
-win.add vbox
-
-combo = Gtk::ComboBoxText.new
-vbox.pack_start combo, false, false, 0
-
-Pango::Script.symbols.each do |script|
-  str = script.to_s
-  combo.append str, str
-end
-
-textview = Gtk::TextView.new
-vbox.pack_start textview, false, false, 0
-
-textbuffer = textview.buffer
-
-combo.signal_connect 'changed' do
-  script = combo.active_text.to_sym
-  lang = Pango.script_get_sample_language script
-
-  unless lang.nil?
-    textbuffer.text = lang.get_sample_string
-  end
-end
-
-
-win.show_all
-
-Gtk.main
+Phew::Application.new.run
