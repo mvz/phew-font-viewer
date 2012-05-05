@@ -23,7 +23,7 @@ module Atspi
           act = Foo.wrap(act.to_ptr)
           nactions = act.get_n_actions
           actlist = nactions.times.map do |nth|
-            "#{act.get_description nth} <#{act.get_key_binding nth}>"
+            "#{act.get_name nth} (#{act.get_description nth}) <#{act.get_key_binding nth}>"
           end
           actions = "; actions: [#{actlist.join ', '}]"
         else
