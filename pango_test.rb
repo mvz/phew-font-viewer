@@ -24,4 +24,11 @@ mostly = [:none, :fallback, :coverage, :exact].max_by {|i| sample_cov.count(i)}
 puts "Coverage mostly: #{mostly}"
 
 fams = fontmap.list_families
-p fams.map &:name
+
+fams.each do |fam|
+  faces = fam.list_faces
+  puts fam.name
+  faces.each do |face|
+    puts "  #{face.face_name}"
+  end
+end
