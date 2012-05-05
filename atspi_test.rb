@@ -16,7 +16,11 @@ module Atspi
       end
     end
 
-    def inspect_recursive level=0, maxlevel=4
+    def inspect_tree maxlevel = 5
+      inspect_recursive 0, maxlevel
+    end
+
+    def inspect_recursive level, maxlevel
       each_child do |child|
         act = child.action
         if act
@@ -30,7 +34,7 @@ module Atspi
           actions = ""
         end
         puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}#{actions}"
-        child.inspect_recursive(level + 1) unless level >= maxlevel
+        child.inspect_recursive(level + 1, maxlevel) unless level >= maxlevel
       end
     end
   end
@@ -38,7 +42,7 @@ end
 
 desktop = Atspi.get_desktop(0)
 
-desktop.inspect_recursive
+desktop.inspect_tree
 
 desktop.each_child do |app|
   if app.name == 'gnome-shell'
