@@ -82,13 +82,14 @@ end
 class PhewDriver
   def initialize
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
+    @lib_dir = File.expand_path('../../lib', File.dirname(__FILE__))
     @pid = nil
     @killed = false
   end
 
   def boot timeout=10
     raise "Already booted" if @pid
-    @pid = Process.spawn "ruby #@app_file"
+    @pid = Process.spawn "ruby -I#@lib_dir #@app_file"
 
     @killed = false
     @cleanup = false
