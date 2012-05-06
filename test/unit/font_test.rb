@@ -1,0 +1,17 @@
+require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+
+require 'gir_ffi-pango'
+
+describe Phew::Font do
+  describe "#coverage_summary" do
+    it "returns summarized coverage information for the given string" do
+      pfont = Phew::Font.new "Sans"
+
+      test_string = "This is a test"
+      sum = pfont.coverage_summary test_string
+
+      sum.keys.sort.must_equal [:none, :fallback, :approximate, :exact].sort
+      sum.values.inject(:+).must_equal test_string.size
+    end
+  end
+end

@@ -20,7 +20,7 @@ puts "Font: #{fnt.describe.to_string}"
 cov = fnt.get_coverage lang
 
 sample_cov = lang.get_sample_string.each_codepoint.map {|cp| cov.get cp}
-mostly = [:none, :fallback, :coverage, :exact].max_by {|i| sample_cov.count(i)}
+mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov.count(i)}
 puts "Coverage mostly: #{mostly}"
 
 fams = fontmap.list_families

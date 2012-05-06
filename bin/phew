@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-require 'ffi-gtk3'
-require 'gir_ffi-pango'
 require 'phew'
 
 Gtk.init
@@ -130,7 +128,7 @@ module Phew
         cov = fnt.get_coverage lang
 
         sample_cov = script.sample_string.each_codepoint.map {|cp| cov.get cp}
-        mostly = [:none, :fallback, :coverage, :exact].max_by {|i| sample_cov.count(i)}
+        mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov.count(i)}
 
         if mostly == :exact
           row = scriptmodel.append
