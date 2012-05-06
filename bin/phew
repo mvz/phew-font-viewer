@@ -108,7 +108,8 @@ module Phew
     end
 
     def initialize
-      @font_repository = FontRepository.new
+      @context = Gdk.pango_context_get
+      @font_repository = FontRepository.new @context
       connect_signals
       win.show_all
     end
@@ -116,8 +117,7 @@ module Phew
     def fill_font_list script
       scriptmodel.clear
 
-      ctx = Gdk.pango_context_get
-      fontmap = ctx.get_font_map
+      fontmap = @context.get_font_map
 
       fontmap.list_families.each do |fam|
         font = @font_repository.get_font fam.name

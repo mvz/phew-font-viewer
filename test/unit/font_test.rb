@@ -5,7 +5,9 @@ require 'gir_ffi-pango'
 describe Phew::Font do
   describe "#coverage_summary" do
     it "returns summarized coverage information for the given string" do
-      pfont = Phew::Font.new "Sans"
+      ctx = Gdk.pango_context_get
+
+      pfont = Phew::Font.new ctx, "Sans"
 
       test_string = "This is a test"
       sum = pfont.coverage_summary test_string
