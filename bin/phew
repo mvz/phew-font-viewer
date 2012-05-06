@@ -108,6 +108,7 @@ module Phew
     end
 
     def initialize
+      @font_repository = FontRepository.new
       connect_signals
       win.show_all
     end
@@ -119,7 +120,7 @@ module Phew
       fontmap = ctx.get_font_map
 
       fontmap.list_families.each do |fam|
-        font = Font.new fam.name
+        font = @font_repository.get_font fam.name
 
         sample_cov = font.coverage_summary script.sample_string
         mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov[i]}

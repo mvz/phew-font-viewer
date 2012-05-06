@@ -2,9 +2,9 @@
 module Phew
   class Font
     # Initialize the font from a text description. The text description should be
-    # in the format accepted by Pange::FontDescription.from_string.
+    # in the format accepted by Pango::FontDescription.from_string.
     #
-    # @param [String] text_description Description of the font to use.
+    # @param [String] text_description Description of the font to create.
     def initialize text_description
       fd = Pango::FontDescription.from_string text_description
       ctx = Gdk.pango_context_get
