@@ -118,17 +118,11 @@ module Phew
       ctx = Gdk.pango_context_get
       fontmap = ctx.get_font_map
 
-      # Create dummy language
-      lang = Pango::Language.new
-
       fontmap.list_families.each do |fam|
-        fd = Pango::FontDescription.new
-        fd.set_family fam.name
-        fnt = fontmap.load_font ctx, fd
-        cov = fnt.get_coverage lang
+        font = Font.new fam.name
 
-        sample_cov = script.sample_string.each_codepoint.map {|cp| cov.get cp}
-        mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov.count(i)}
+        sample_cov = font.coverage_summary script.sample_string
+        mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov[i]}
 
         if mostly == :exact
           row = scriptmodel.append
