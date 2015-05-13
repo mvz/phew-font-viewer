@@ -14,16 +14,16 @@ module Atspi
       end
     end
 
-    def find_role role, regex=//
-      return self if role == self.role and self.name =~ regex
-      self.each_child do |child|
+    def find_role role, regex = //
+      return self if role == self.role and name =~ regex
+      each_child do |child|
         result = child.find_role role, regex
         return result if result
       end
       nil
     end
 
-    def inspect_recursive level=0, maxlevel=4
+    def inspect_recursive level = 0, maxlevel = 4
       each_child do |child|
         puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}"
         child.inspect_recursive(level + 1) unless level >= maxlevel
@@ -65,9 +65,9 @@ class PhewDriver
     @killed = false
   end
 
-  def boot timeout=10
-    raise "Already booted" if @pid
-    @pid = Process.spawn "ruby -I#@lib_dir #@app_file"
+  def boot timeout = 10
+    raise 'Already booted' if @pid
+    @pid = Process.spawn "ruby -I#{@lib_dir} #{@app_file}"
 
     @killed = false
     @cleanup = false
@@ -84,9 +84,9 @@ class PhewDriver
       end
 
       if @pid
-        warn "About to kill child process #@pid"
+        warn "About to kill child process #{@pid}"
         @killed = true
-        Process.kill "KILL", @pid
+        Process.kill 'KILL', @pid
       end
     end
   end
@@ -96,11 +96,11 @@ class PhewDriver
     @cleanup = true
     _, status = Process.wait2 @pid
     @pid = nil
-    return status
+    status
   end
 
   def get_and_focus_frame
-    acc = try_repeatedly { find_app "phew" }
+    acc = try_repeatedly { find_app 'phew' }
     acc.wont_be_nil
 
     frame = acc.get_child_at_index 0
@@ -108,18 +108,17 @@ class PhewDriver
     frame.grab_focus
     sleep 0.1
 
-    return frame
+    frame
   end
-
 end
 
-describe "The Phew application" do
+describe 'The Phew application' do
   before do
     @driver = PhewDriver.new
     @driver.boot
   end
 
-  it "starts and can be quit with Ctrl-q" do
+  it 'starts and can be quit with Ctrl-q' do
     @driver.get_and_focus_frame
 
     press_ctrl_q
@@ -128,7 +127,7 @@ describe "The Phew application" do
     status.exitstatus.must_equal 0
   end
 
-  it "shows a dropdown list of scripts" do
+  it 'shows a dropdown list of scripts' do
     frame = @driver.get_and_focus_frame
 
     box = frame.find_role :combo_box
@@ -138,14 +137,14 @@ describe "The Phew application" do
 
     textbox = frame.find_role :text
     textbox.wont_be_nil
-    textbox.get_text(0, 100).must_equal ""
+    textbox.get_text(0, 100).must_equal ''
 
     box.get_action_name(0).must_equal 'press'
     box.do_action 0
     latin.get_action_name(0).must_equal 'click'
     latin.do_action 0
 
-    textbox.get_text(0, 100).must_equal "The quick brown fox jumps over the lazy dog."
+    textbox.get_text(0, 100).must_equal 'The quick brown fox jumps over the lazy dog.'
 
     press_ctrl_q
     status = @driver.cleanup

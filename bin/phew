@@ -9,10 +9,9 @@ module Phew
     # FIXME: Should be able to fill inside #initialize
     def fill
       Pango::Script::Enum.symbols.
-        map {|sym| sym.to_s}.
-        each {|str| self.append str, str}
+        map(&:to_s).
+        each { |str| append str, str }
     end
-
   end
 
   # Main Phew window
@@ -22,7 +21,7 @@ module Phew
     # - Pressing Ctrl-Q closes the window.
     def connect_signals
       signal_connect('destroy') { on_destroy_event }
-      signal_connect('key-press-event') { |_,evt,_| on_key_press_event evt }
+      signal_connect('key-press-event') { |_, evt, _| on_key_press_event evt }
     end
 
     def on_destroy_event
@@ -31,9 +30,7 @@ module Phew
     end
 
     def on_key_press_event evt
-      if evt.state == :control_mask and evt.keyval == "q".ord
-        self.destroy
-      end
+      destroy if evt.state == :control_mask && evt.keyval == 'q'.ord
       false
     end
   end
@@ -41,7 +38,7 @@ module Phew
   # Main Phew application.
   class Application
     def combo
-      @combo ||= ScriptList.new.tap {|lst| lst.fill}
+      @combo ||= ScriptList.new.tap(&:fill)
     end
 
     def textview
@@ -74,9 +71,9 @@ module Phew
       @script_list ||= Gtk::TreeView.new_with_model(scriptmodel).tap do |view|
         renderer = Gtk::CellRendererText.new
         col = Gtk::TreeViewColumn.new
-        col.set_title "Font Name"
+        col.set_title 'Font Name'
         col.pack_start renderer, true
-        col.add_attribute renderer, "text", 0
+        col.add_attribute renderer, 'text', 0
         view.append_column col
       end
     end
@@ -123,7 +120,7 @@ module Phew
         font = @font_repository.get_font fam.name
 
         sample_cov = font.coverage_summary script.sample_string
-        mostly = [:none, :fallback, :approximate, :exact].max_by {|i| sample_cov[i]}
+        mostly = [:none, :fallback, :approximate, :exact].max_by { |i| sample_cov[i] }
 
         if mostly == :exact
           row = scriptmodel.append
