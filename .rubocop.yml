@@ -1,0 +1,15 @@
+# Require lines to fit in pull requests.
+Metrics/LineLength:
+  Max: 92
+
+# Dot at end of line makes it clearer that the line is not done
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+# Prefer no parentheses in method definitions
+Style/MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses
+
+# Always use raise to raise exceptions
+Style/SignalException:
+  EnforcedStyle: only_raise
