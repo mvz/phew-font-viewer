@@ -147,8 +147,6 @@ describe "The Phew application" do
 
     textbox.get_text(0, 100).must_equal "The quick brown fox jumps over the lazy dog."
 
-    #frame.inspect_recursive
-
     press_ctrl_q
     status = @driver.cleanup
     status.exitstatus.must_equal 0
