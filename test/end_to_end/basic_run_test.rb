@@ -57,28 +57,6 @@ def press_ctrl_q
   Atspi.generate_keyboard_event(37, nil, :release)
 end
 
-class ActionWrapper < GObject::Object
-  include Atspi::Action
-end
-
-class TextWrapper < GObject::Object
-  include Atspi::Text
-end
-
-def get_action_wrapped acc
-  act = acc.action
-  unless act.nil?
-    ActionWrapper.wrap(act.to_ptr)
-  end
-end
-
-def get_text_wrapped acc
-  act = acc.text
-  unless act.nil?
-    TextWrapper.wrap(act.to_ptr)
-  end
-end
-
 class PhewDriver
   def initialize
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
@@ -161,19 +139,18 @@ describe "The Phew application" do
 
     textbox = frame.find_role :text
     textbox.wont_be_nil
-    text = get_text_wrapped textbox
-    text.get_text(0, 100).must_equal ""
+    textbox.get_text(0, 100).must_equal ""
 
-    act = get_action_wrapped(latin)
-    act.wont_be_nil
-    act.get_name(0).must_equal 'click'
-    act.do_action 0
+    latin.get_action_name(0).must_equal 'click'
+    latin.do_action 0
 
-    text.get_text(0, 100).must_equal "The quick brown fox jumps over the lazy dog."
+    textbox.get_text(0, 100).must_equal "The quick brown fox jumps over the lazy dog."
 
     #frame.inspect_recursive
 
     press_ctrl_q
+    status = @driver.cleanup
+    status.exitstatus.must_equal 0
   end
 
   after do
