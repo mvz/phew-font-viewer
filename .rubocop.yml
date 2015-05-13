@@ -1,6 +1,17 @@
+# TODO: Fix offense in listed file
+Metrics/AbcSize:
+  Exclude:
+    - 'bin/phew'
+
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92
+
+# TODO: Fix offense in listed files
+Metrics/MethodLength:
+  Exclude:
+    - 'bin/phew'
+    - 'test/end_to_end/basic_run_test.rb'
 
 # Dot at end of line makes it clearer that the line is not done
 Style/DotPosition:
