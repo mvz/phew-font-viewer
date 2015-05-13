@@ -1,4 +1,4 @@
-require 'ffi-gtk3'
+require 'gir_ffi-gtk3'
 require 'gir_ffi-pango'
 
 require 'phew/script'
