@@ -3,10 +3,10 @@ require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi'
 
 GirFFI.setup :Atspi
+Atspi.load_class :Accessible
 
 module Atspi
-  load_class :Accessible
-
+  # Utility monkey-patches for the Atspi::Accessible class
   class Accessible
     def each_child
       child_count.times do |i|
@@ -15,7 +15,7 @@ module Atspi
     end
 
     def find_role role, regex = //
-      return self if role == self.role and name =~ regex
+      return self if role == self.role && name =~ regex
       each_child do |child|
         result = child.find_role role, regex
         return result if result
@@ -57,6 +57,8 @@ def press_ctrl_q
   Atspi.generate_keyboard_event(37, nil, :release)
 end
 
+# Test driver for the Phew application. Takes care of boot and shutdown, and
+# provides a handle on the GUI's main UI frame.
 class PhewDriver
   def initialize
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
@@ -99,7 +101,7 @@ class PhewDriver
     status
   end
 
-  def get_and_focus_frame
+  def find_and_focus_frame
     acc = try_repeatedly { find_app 'phew' }
     acc.wont_be_nil
 
@@ -119,7 +121,7 @@ describe 'The Phew application' do
   end
 
   it 'starts and can be quit with Ctrl-q' do
-    @driver.get_and_focus_frame
+    @driver.find_and_focus_frame
 
     press_ctrl_q
 
@@ -128,7 +130,7 @@ describe 'The Phew application' do
   end
 
   it 'shows a dropdown list of scripts' do
-    frame = @driver.get_and_focus_frame
+    frame = @driver.find_and_focus_frame
 
     box = frame.find_role :combo_box
 

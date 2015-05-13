@@ -1,5 +1,5 @@
-# Font family. Handles coverage, among other things.
 module Phew
+  # Font family. Handles coverage, among other things.
   class Font
     # Initialize the font from a text description. The text description should be
     # in the format accepted by Pango::FontDescription.from_string.
