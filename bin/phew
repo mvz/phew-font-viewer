@@ -8,7 +8,7 @@ module Phew
   class ScriptList < Gtk::ComboBoxText
     # FIXME: Should be able to fill inside #initialize
     def fill
-      Pango::Script.symbols.
+      Pango::Script::Enum.symbols.
         map {|sym| sym.to_s}.
         each {|str| self.append str, str}
     end
