@@ -1,5 +1,5 @@
-# Font family. Handles coverage, among other things.
 module Phew
+  # Font family. Handles coverage, among other things.
   class Font
     # Initialize the font from a text description. The text description should be
     # in the format accepted by Pango::FontDescription.from_string.
@@ -19,9 +19,9 @@ module Phew
     def coverage_summary text
       lang = Pango::Language.new
       cov = @font.get_coverage lang
-      text_cov = text.each_codepoint.map {|cp| cov.get cp}
+      text_cov = text.each_codepoint.map { |cp| cov.get cp }
       Hash[
-        Pango::CoverageLevel::Enum.symbols.map {|lvl| [lvl, text_cov.count(lvl)]} ]
+        Pango::CoverageLevel::Enum.symbols.map { |lvl| [lvl, text_cov.count(lvl)] }]
     end
   end
 end

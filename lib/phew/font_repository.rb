@@ -1,4 +1,5 @@
 module Phew
+  # Cache for font information retrieved from a Pango context
   class FontRepository
     # @param [Pango::Context] context Pango context to retrieve fonts from.
     def initialize context

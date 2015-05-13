@@ -3,13 +3,13 @@ require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi-pango'
 
 describe Phew::Font do
-  describe "#coverage_summary" do
-    it "returns summarized coverage information for the given string" do
+  describe '#coverage_summary' do
+    it 'returns summarized coverage information for the given string' do
       ctx = Gdk.pango_context_get
 
-      pfont = Phew::Font.new ctx, "Sans"
+      pfont = Phew::Font.new ctx, 'Sans'
 
-      test_string = "This is a test"
+      test_string = 'This is a test'
       sum = pfont.coverage_summary test_string
 
       sum.keys.sort.must_equal [:none, :fallback, :approximate, :exact].sort
