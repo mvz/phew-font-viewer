@@ -11,9 +11,12 @@ Gem::Specification.new do |s|
   s.email = ["matijs@matijs.net"]
   s.homepage = "http://www.github.com/mvz/phew-font-viewer"
 
+  s.license = "GPL-3"
+
   s.files = Dir[ '{bin,lib,test,doc}/**/*',
                  "*.md",
                  "Gemfile",
+                 "COPYING",
                  "Rakefile" ] & `git ls-files -z`.split("\0")
 
   s.rdoc_options = ["--main", "README.md"]

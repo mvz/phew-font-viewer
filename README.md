@@ -26,3 +26,18 @@ by adding and removing fonts.
 Tentatively, there would be a filtering system, and we would have two
 lists of fonts that satisfy the filters, namely those that have been
 selected (the default state), and those that have been rejected.
+
+## License
+
+Copyright (c) 2012, 2015 Matijs van Zuijlen
+
+Phew is free software; you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+This application is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this application. If not, see <http://www.gnu.org/licenses/>.
