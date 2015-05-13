@@ -106,7 +106,7 @@ class PhewDriver
     frame = acc.get_child_at_index 0
     frame.role.must_equal :frame
     frame.grab_focus
-    sleep 0.01
+    sleep 0.1
 
     return frame
   end
@@ -123,7 +123,6 @@ describe "The Phew application" do
     @driver.get_and_focus_frame
 
     press_ctrl_q
-    sleep 0.5
 
     status = @driver.cleanup
     status.exitstatus.must_equal 0
