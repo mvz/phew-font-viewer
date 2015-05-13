@@ -140,6 +140,8 @@ describe "The Phew application" do
     textbox.wont_be_nil
     textbox.get_text(0, 100).must_equal ""
 
+    box.get_action_name(0).must_equal 'press'
+    box.do_action 0
     latin.get_action_name(0).must_equal 'click'
     latin.do_action 0
 
