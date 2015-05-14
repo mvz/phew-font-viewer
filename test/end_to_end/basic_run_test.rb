@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require_relative '../test_helper'
 
 require 'gir_ffi'
 

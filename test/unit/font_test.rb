@@ -1,6 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
-
-require 'gir_ffi-pango'
+require_relative '../test_helper'
 
 describe Phew::Font do
   describe '#coverage_summary' do

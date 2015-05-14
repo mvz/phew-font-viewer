@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require_relative '../test_helper'
 
 describe Phew::FontRepository do
   describe '#get_font' do
