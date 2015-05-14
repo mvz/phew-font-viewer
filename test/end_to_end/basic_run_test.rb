@@ -38,6 +38,7 @@ class PhewDriver
   def initialize
     @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
     @lib_dir = File.expand_path('../../lib', File.dirname(__FILE__))
+    @app_name = 'phew'
     @pid = nil
     @killed = false
   end
@@ -83,7 +84,7 @@ class PhewDriver
   end
 
   def find_and_focus_frame
-    acc = try_repeatedly { find_app 'phew' }
+    acc = try_repeatedly { find_app @app_name }
     acc.wont_be_nil
 
     frame = acc.get_child_at_index 0
