@@ -5,32 +5,32 @@ require 'gir_ffi'
 GirFFI.setup :Atspi
 Atspi.load_class :Accessible
 
-module Atspi
-  # Utility monkey-patches for the Atspi::Accessible class
-  class Accessible
-    def each_child
-      child_count.times do |i|
-        yield get_child_at_index i
-      end
+# Utility monkey-patches for the Atspi::Accessible class
+module AtspiAccessiblePatches
+  def each_child
+    child_count.times do |i|
+      yield get_child_at_index i
     end
+  end
 
-    def find_role role, regex = //
-      return self if role == self.role && name =~ regex
-      each_child do |child|
-        result = child.find_role role, regex
-        return result if result
-      end
-      nil
+  def find_role role, regex = //
+    return self if role == self.role && name =~ regex
+    each_child do |child|
+      result = child.find_role role, regex
+      return result if result
     end
+    nil
+  end
 
-    def inspect_recursive level = 0, maxlevel = 4
-      each_child do |child|
-        puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}"
-        child.inspect_recursive(level + 1) unless level >= maxlevel
-      end
+  def inspect_recursive level = 0, maxlevel = 4
+    each_child do |child|
+      puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}"
+      child.inspect_recursive(level + 1) unless level >= maxlevel
     end
   end
 end
+
+Atspi::Accessible.include AtspiAccessiblePatches
 
 # Test driver for the Phew application. Takes care of boot and shutdown, and
 # provides a handle on the GUI's main UI frame.
