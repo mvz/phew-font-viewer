@@ -32,31 +32,6 @@ module Atspi
   end
 end
 
-def find_app name
-  desktop = Atspi.get_desktop(0)
-  desktop.each_child do |child|
-    next if child.nil?
-    return child if child.name == name
-  end
-  nil
-end
-
-def try_repeatedly
-  100.times.each do |num|
-    result = yield
-    return result if result
-    sleep_time = 0.01 * (num + 1)
-    sleep sleep_time
-  end
-  yield
-end
-
-def press_ctrl_q
-  Atspi.generate_keyboard_event(37, nil, :press)
-  Atspi.generate_keyboard_event(24, nil, :pressrelease)
-  Atspi.generate_keyboard_event(37, nil, :release)
-end
-
 # Test driver for the Phew application. Takes care of boot and shutdown, and
 # provides a handle on the GUI's main UI frame.
 class PhewDriver
@@ -93,6 +68,12 @@ class PhewDriver
     end
   end
 
+  def press_ctrl_q
+    Atspi.generate_keyboard_event(37, nil, :press)
+    Atspi.generate_keyboard_event(24, nil, :pressrelease)
+    Atspi.generate_keyboard_event(37, nil, :release)
+  end
+
   def cleanup
     return unless @pid
     @cleanup = true
@@ -112,6 +93,27 @@ class PhewDriver
 
     frame
   end
+
+  private
+
+  def find_app name
+    desktop = Atspi.get_desktop(0)
+    desktop.each_child do |child|
+      next if child.nil?
+      return child if child.name == name
+    end
+    nil
+  end
+
+  def try_repeatedly
+    100.times.each do |num|
+      result = yield
+      return result if result
+      sleep_time = 0.01 * (num + 1)
+      sleep sleep_time
+    end
+    yield
+  end
 end
 
 describe 'The Phew application' do
@@ -123,7 +125,7 @@ describe 'The Phew application' do
   it 'starts and can be quit with Ctrl-q' do
     @driver.find_and_focus_frame
 
-    press_ctrl_q
+    @driver.press_ctrl_q
 
     status = @driver.cleanup
     status.exitstatus.must_equal 0
@@ -148,7 +150,7 @@ describe 'The Phew application' do
 
     textbox.get_text(0, 100).must_equal 'The quick brown fox jumps over the lazy dog.'
 
-    press_ctrl_q
+    @driver.press_ctrl_q
     status = @driver.cleanup
     status.exitstatus.must_equal 0
   end
