@@ -32,10 +32,10 @@ end
 
 Atspi::Accessible.include AtspiAccessiblePatches
 
-# Test driver for the Phew application. Takes care of boot and shutdown, and
-# provides a handle on the GUI's main UI frame.
-class PhewDriver
-  def initialize app_name = 'phew'
+# Test driver for the Atspi-enabled applications. Takes care of boot and
+# shutdown, and provides a handle on the GUI's main UI frame.
+class AppDriver
+  def initialize app_name
     @app_file = "bin/#{app_name}"
     @lib_dir = 'lib'
     @app_name = app_name
@@ -114,6 +114,13 @@ class PhewDriver
       sleep sleep_time
     end
     yield
+  end
+end
+
+# Test driver for the Phew application.
+class PhewDriver < AppDriver
+  def initialize
+    super 'phew'
   end
 end
 
