@@ -36,8 +36,8 @@ Atspi::Accessible.include AtspiAccessiblePatches
 # provides a handle on the GUI's main UI frame.
 class PhewDriver
   def initialize
-    @app_file = File.expand_path('../../bin/phew', File.dirname(__FILE__))
-    @lib_dir = File.expand_path('../../lib', File.dirname(__FILE__))
+    @app_file = 'bin/phew'
+    @lib_dir = 'lib'
     @app_name = 'phew'
     @pid = nil
     @killed = false
