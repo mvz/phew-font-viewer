@@ -4,7 +4,8 @@ require 'atspi_app_driver'
 # Test driver for the Phew application.
 class PhewDriver < AtspiAppDriver
   def initialize
-    super 'phew'
+    verbose = ENV['VERBOSE'] == 'true'
+    super 'phew', verbose: verbose
   end
 end
 
