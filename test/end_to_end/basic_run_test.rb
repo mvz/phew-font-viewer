@@ -15,8 +15,6 @@ describe 'The Phew application' do
   end
 
   it 'starts and can be quit with Ctrl-q' do
-    @driver.find_and_focus_frame
-
     @driver.press_ctrl_q
 
     status = @driver.cleanup
@@ -24,7 +22,7 @@ describe 'The Phew application' do
   end
 
   it 'shows a dropdown list of scripts' do
-    frame = @driver.find_and_focus_frame
+    frame = @driver.frame
 
     box = frame.find_role :combo_box
 

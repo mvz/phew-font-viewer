@@ -40,7 +40,10 @@ class AppDriver
     @app_name = app_name
     @pid = nil
     @verbose = verbose
+    @frame = nil
   end
+
+  attr_reader :frame
 
   def boot(test_timeout: 30, exit_timeout: 10, arguments: [])
     raise 'Already booted' if @pid
@@ -48,6 +51,8 @@ class AppDriver
     spawn_process(arguments)
 
     @cleanup = false
+
+    @frame = find_and_focus_frame
 
     @thread = Thread.new do
       wait_for('test to be done', test_timeout) { @cleanup }
@@ -75,6 +80,8 @@ class AppDriver
     status
   end
 
+  private
+
   def find_and_focus_frame
     acc = wait_for('app to appear', 10) { find_app }
     raise 'App not found' unless acc
@@ -86,8 +93,6 @@ class AppDriver
 
     frame
   end
-
-  private
 
   def kill_process
     log "About to kill child process #{@pid}"
