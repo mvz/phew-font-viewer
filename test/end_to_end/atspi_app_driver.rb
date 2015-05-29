@@ -89,7 +89,6 @@ class AppDriver
     frame = acc.get_child_at_index 0
     frame.role.must_equal :frame
     frame.grab_focus
-    sleep 0.1
 
     frame
   end
