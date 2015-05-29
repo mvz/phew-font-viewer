@@ -12,7 +12,7 @@ module AtspiAccessiblePatches
     end
   end
 
-  def find_role(role, regex = //)
+  def find_role role, regex = //
     return self if role == self.role && name =~ regex
     each_child do |child|
       result = child.find_role role, regex
@@ -21,7 +21,7 @@ module AtspiAccessiblePatches
     nil
   end
 
-  def inspect_recursive(level = 0, maxlevel = 4)
+  def inspect_recursive level = 0, maxlevel = 4
     each_child do |child|
       puts "#{'  ' * level} > name: #{child.name}; role: #{child.role}"
       child.inspect_recursive(level + 1) unless level >= maxlevel
@@ -34,7 +34,7 @@ Atspi::Accessible.include AtspiAccessiblePatches
 # Test driver for the Atspi-enabled applications. Takes care of boot and
 # shutdown, and provides a handle on the GUI's main UI frame.
 class AppDriver
-  def initialize(app_name, verbose: false)
+  def initialize app_name, verbose: false
     @app_file = "bin/#{app_name}"
     @lib_dir = 'lib'
     @app_name = app_name
@@ -45,7 +45,7 @@ class AppDriver
 
   attr_reader :frame
 
-  def boot(test_timeout: 30, exit_timeout: 10, arguments: [])
+  def boot test_timeout: 30, exit_timeout: 10, arguments: []
     raise 'Already booted' if @pid
 
     spawn_process(arguments)
@@ -61,7 +61,7 @@ class AppDriver
     end
   end
 
-  def spawn_process(arguments)
+  def spawn_process arguments
     command = "ruby -I#{@lib_dir} #{@app_file} #{arguments.join(' ')}"
     log "About to spawn: `#{command}`"
     @pid = Process.spawn command
@@ -99,7 +99,7 @@ class AppDriver
     Process.kill 'KILL', @pid
   end
 
-  def log(message)
+  def log message
     warn message if @verbose
   end
 
@@ -112,7 +112,7 @@ class AppDriver
   end
 
   # TODO: User timeout
-  def wait_for(description, _timeout)
+  def wait_for description, _timeout
     start = Time.now
     # Try for 0.01 * 50 * (50 + 1) / 2 = 12.75 seconds
     value = 50.times.each do |num|
