@@ -1,8 +1,8 @@
 require_relative '../test_helper'
-require_relative 'atspi_app_driver'
+require 'atspi_app_driver'
 
 # Test driver for the Phew application.
-class PhewDriver < AppDriver
+class PhewDriver < AtspiAppDriver
   def initialize
     super 'phew'
   end
@@ -15,6 +15,7 @@ describe 'The Phew application' do
   end
 
   it 'starts and can be quit with Ctrl-q' do
+    sleep 0.05
     @driver.press_ctrl_q
 
     status = @driver.cleanup
