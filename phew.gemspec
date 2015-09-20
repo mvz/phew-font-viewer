@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'phew'
-  s.version = '0.0.1'
+  s.version = '0.0.2'
 
   s.summary = 'A GNOME Font Viewer'
   s.description = 'List and compare installed fonts on GNOME'
