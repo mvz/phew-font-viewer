@@ -30,7 +30,7 @@ module Phew
     end
 
     def on_key_press_event evt
-      destroy if evt.state == :control_mask && evt.keyval == 'q'.ord
+      destroy if evt.state[:control_mask] && evt.keyval == 'q'.ord
       false
     end
   end
