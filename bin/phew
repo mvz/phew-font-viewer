@@ -100,7 +100,8 @@ module Phew
 
     def on_combo_changed_signal
       script = Script.new combo.active_text.to_sym
-      textview.buffer.text = script.sample_string
+      # FIXME: Add override for Gtk::TextBuffer.set_text so #text= works properly
+      textview.buffer.set_text script.sample_string, -1
       fill_font_list script
     end
 
