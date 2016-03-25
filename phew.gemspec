@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
 
   s.rdoc_options = ['--main', 'README.md']
 
-  s.add_dependency('gir_ffi-gtk', ['~> 0.9.0'])
-  s.add_dependency('gir_ffi-pango', ['0.0.7'])
+  s.add_dependency('gir_ffi-gtk', ['~> 0.10.0'])
+  s.add_dependency('gir_ffi-pango', ['0.0.8'])
   s.add_development_dependency('rake', ['~> 11.1'])
   s.add_development_dependency('minitest', ['~> 5.5'])
-  s.add_development_dependency('atspi_app_driver', ['0.0.5'])
+  s.add_development_dependency('atspi_app_driver', ['0.0.6'])
 end
