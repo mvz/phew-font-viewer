@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'phew'
-  s.version = '0.0.2'
+  s.version = '0.0.3'
 
   s.summary = 'A GNOME Font Viewer'
   s.description = 'List and compare installed fonts on GNOME'
@@ -18,6 +18,10 @@ Gem::Specification.new do |s|
                 'Gemfile',
                 'COPYING',
                 'Rakefile'] & `git ls-files -z`.split("\0")
+
+  s.require_paths << 'lib'
+  s.bindir = 'bin'
+  s.executables << 'phew'
 
   s.rdoc_options = ['--main', 'README.md']
 
