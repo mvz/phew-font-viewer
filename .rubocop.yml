@@ -2,11 +2,6 @@
 Layout/DotPosition:
   EnforcedStyle: trailing
 
-# TODO: Fix offense in listed file
-Metrics/AbcSize:
-  Exclude:
-    - 'bin/phew'
-
 # Test describe blocks can be any length
 Metrics/BlockLength:
   Exclude:
@@ -16,12 +11,6 @@ Metrics/BlockLength:
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92
-
-# TODO: Fix offense in listed files
-Metrics/MethodLength:
-  Exclude:
-    - 'bin/phew'
-    - 'test/end_to_end/basic_run_test.rb'
 
 # Prefer no parentheses in method definitions
 Style/MethodDefParentheses:

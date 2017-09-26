@@ -115,19 +115,25 @@ module Phew
     def fill_font_list script
       scriptmodel.clear
 
-      fontmap = @context.get_font_map
-
-      fontmap.list_families.each do |fam|
+      font_families.each do |fam|
         font = @font_repository.get_font fam.name
 
-        sample_cov = font.coverage_summary script.sample_string
-        mostly = [:none, :fallback, :approximate, :exact].max_by { |i| sample_cov[i] }
-
-        if mostly == :exact
+        if sample_coverage(font, script) == :exact
           row = scriptmodel.append
           scriptmodel.set_value row, 0, fam.name
         end
       end
+    end
+
+    def sample_coverage font, script
+      sample_cov = font.coverage_summary script.sample_string
+      [:none, :fallback, :approximate, :exact].max_by { |i| sample_cov[i] }
+    end
+
+    def font_families
+      fontmap = @context.get_font_map
+
+      fontmap.list_families
     end
 
     def run
