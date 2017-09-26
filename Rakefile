@@ -7,17 +7,17 @@ Bundler::GemHelper.install_tasks
 namespace :test do
   Rake::TestTask.new(:unit) do |t|
     t.libs = ['lib']
-    t.test_files = FileList['test/unit/*_test.rb']
+    t.test_files = FileList['test/**/*_test.rb']
     t.warning = true
   end
 
-  Rake::TestTask.new(:end_to_end) do |t|
+  Rake::TestTask.new(:features) do |t|
     t.libs = ['lib']
-    t.test_files = FileList['test/end_to_end/*_test.rb']
+    t.test_files = FileList['features/**/*_test.rb']
     t.warning = true
   end
 
-  task all: [:unit, :end_to_end]
+  task all: [:unit, :features]
 end
 
 task test: 'test:all'
