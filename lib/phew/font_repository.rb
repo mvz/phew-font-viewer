@@ -6,6 +6,7 @@ module Phew
       @store = {}
       @context = context
     end
+
     # Retrieve a font based on the given text description. The text description
     # should be in the format accepted by Font#new.
     #
