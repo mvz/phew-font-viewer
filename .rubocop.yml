@@ -7,6 +7,12 @@ Metrics/AbcSize:
   Exclude:
     - 'bin/phew'
 
+# Test describe blocks can be any length
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+    - 'features/**/*'
+
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92
@@ -24,3 +30,7 @@ Style/MethodDefParentheses:
 # Always use raise to raise exceptions
 Style/SignalException:
   EnforcedStyle: only_raise
+
+# I like to have symbols always look like symbols
+Style/SymbolArray:
+  EnforcedStyle: brackets
