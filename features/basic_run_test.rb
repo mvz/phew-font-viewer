@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require_relative 'test_helper'
 require 'atspi_app_driver'
 
 # Test driver for the Phew application.
