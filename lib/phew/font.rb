@@ -6,7 +6,7 @@ module Phew
     #
     # @param [Pango::Context] context Pango context to retrieve font from.
     # @param [String] text_description Description of the font to create.
-    def initialize context, text_description
+    def initialize(context, text_description)
       fd = Pango::FontDescription.from_string text_description
       fontmap = context.get_font_map
       @font = fontmap.load_font context, fd
@@ -16,7 +16,7 @@ module Phew
     #
     # @return A hash with keys :none, :fallback, :approximate, :exact, and values
     #   indicating the number of characters in the text that have that coverage.
-    def coverage_summary text
+    def coverage_summary(text)
       lang = Pango::Language.new
       cov = @font.get_coverage lang
       text_cov = text.each_codepoint.map { |cp| cov.get cp }

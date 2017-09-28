@@ -1,7 +1,7 @@
 module Phew
   # A script.
   class Script
-    def initialize name
+    def initialize(name)
       symbol = name.to_sym
       @symbol = symbol
       @lang = Pango.script_get_sample_language symbol
