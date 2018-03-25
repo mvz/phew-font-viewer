@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
 
   s.summary = 'A GNOME Font Viewer'
   s.description = 'List and compare installed fonts on GNOME'
-  s.required_ruby_version = '>= 2.1.0'
+  s.required_ruby_version = '>= 2.3.0'
 
   s.authors = ['Matijs van Zuijlen']
   s.email = ['matijs@matijs.net']
