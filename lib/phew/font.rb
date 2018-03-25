@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Phew
   # Font family. Handles coverage, among other things.
   class Font

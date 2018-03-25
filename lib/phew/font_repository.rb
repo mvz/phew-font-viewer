@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Phew
   # Cache for font information retrieved from a Pango context
   class FontRepository
