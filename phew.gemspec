@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
   s.add_dependency('gir_ffi-pango', ['0.0.13'])
   s.add_development_dependency('atspi_app_driver', ['~> 0.5.0'])
   s.add_development_dependency('minitest', ['~> 5.5'])
-  s.add_development_dependency('rake', ['~> 12.0'])
   s.add_development_dependency('pry', ['~> 0.12.2'])
+  s.add_development_dependency('rake', ['~> 12.0'])
 end
