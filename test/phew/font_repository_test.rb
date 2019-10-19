@@ -8,7 +8,7 @@ describe Phew::FontRepository do
       ctx = Gdk.pango_context_get
       repo = Phew::FontRepository.new ctx
       font = repo.get_font 'Sans'
-      font.must_be_instance_of Phew::Font
+      _(font).must_be_instance_of Phew::Font
     end
 
     it 'returns the same object if called again with the same description' do
@@ -16,7 +16,7 @@ describe Phew::FontRepository do
       repo = Phew::FontRepository.new ctx
       font = repo.get_font 'Sans'
       font_again = repo.get_font 'Sans'
-      font_again.must_be_same_as font
+      _(font_again).must_be_same_as font
     end
   end
 end

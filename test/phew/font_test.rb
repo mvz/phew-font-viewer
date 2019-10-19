@@ -12,8 +12,8 @@ describe Phew::Font do
       test_string = 'This is a test'
       sum = pfont.coverage_summary test_string
 
-      sum.keys.sort.must_equal [:none, :fallback, :approximate, :exact].sort
-      sum.values.inject(:+).must_equal test_string.size
+      _(sum.keys.sort).must_equal [:none, :fallback, :approximate, :exact].sort
+      _(sum.values.inject(:+)).must_equal test_string.size
     end
   end
 end
