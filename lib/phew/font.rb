@@ -10,6 +10,7 @@ module Phew
     # @param [String] text_description Description of the font to create.
     def initialize(context, text_description)
       fd = Pango::FontDescription.from_string text_description
+      fd.size = 10
       fontmap = context.get_font_map
       @font = fontmap.load_font context, fd
     end
