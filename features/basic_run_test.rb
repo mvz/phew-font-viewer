@@ -22,7 +22,7 @@ describe 'The Phew application' do
     @driver.press_ctrl_q
 
     status = @driver.cleanup
-    status.exitstatus.must_equal 0
+    _(status.exitstatus).must_equal 0
   end
 
   it 'shows a dropdown list of scripts' do
@@ -31,22 +31,22 @@ describe 'The Phew application' do
     box = frame.find_role :combo_box
 
     latin = box.find_role :menu_item, /latin/
-    latin.wont_be_nil
+    _(latin).wont_be_nil
 
     textbox = frame.find_role :text
-    textbox.wont_be_nil
-    textbox.get_text(0, 100).must_equal ''
+    _(textbox).wont_be_nil
+    _(textbox.get_text(0, 100)).must_equal ''
 
-    box.get_action_name(0).must_equal 'press'
+    _(box.get_action_name(0)).must_equal 'press'
     box.do_action 0
-    latin.get_action_name(0).must_equal 'click'
+    _(latin.get_action_name(0)).must_equal 'click'
     latin.do_action 0
 
-    textbox.get_text(0, 100).must_equal 'The quick brown fox jumps over the lazy dog.'
+    _(textbox.get_text(0, 100)).must_equal 'The quick brown fox jumps over the lazy dog.'
 
     @driver.press_ctrl_q
     status = @driver.cleanup
-    status.exitstatus.must_equal 0
+    _(status.exitstatus).must_equal 0
   end
 
   after do
