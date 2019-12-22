@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'phew'
+require "phew"
 
 Gtk.init
 
@@ -22,8 +22,8 @@ module Phew
     # - Closing the window ends the application
     # - Pressing Ctrl-Q closes the window.
     def connect_signals
-      signal_connect('destroy') { on_destroy_event }
-      signal_connect('key-press-event') { |_, evt, _| on_key_press_event evt }
+      signal_connect("destroy") { on_destroy_event }
+      signal_connect("key-press-event") { |_, evt, _| on_key_press_event evt }
     end
 
     def on_destroy_event
@@ -32,7 +32,7 @@ module Phew
     end
 
     def on_key_press_event(evt)
-      destroy if evt.state[:control_mask] && evt.keyval == 'q'.ord
+      destroy if evt.state[:control_mask] && evt.keyval == "q".ord
       false
     end
   end
@@ -73,9 +73,9 @@ module Phew
       @script_list ||= Gtk::TreeView.new_with_model(scriptmodel).tap do |view|
         renderer = Gtk::CellRendererText.new
         col = Gtk::TreeViewColumn.new
-        col.set_title 'Font Name'
+        col.set_title "Font Name"
         col.pack_start renderer, true
-        col.add_attribute renderer, 'text', 0
+        col.add_attribute renderer, "text", 0
         view.append_column col
       end
     end
@@ -97,7 +97,7 @@ module Phew
     # Set up all signal handlers
     def connect_signals
       win.connect_signals
-      combo.signal_connect('changed') { on_combo_changed_signal }
+      combo.signal_connect("changed") { on_combo_changed_signal }
     end
 
     def on_combo_changed_signal

@@ -11,7 +11,7 @@ module Phew
 
     def sample_string
       if @lang.nil?
-        'No sample available'
+        "No sample available"
       else
         @lang.get_sample_string
       end
