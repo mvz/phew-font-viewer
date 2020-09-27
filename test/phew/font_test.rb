@@ -10,10 +10,10 @@ describe Phew::Font do
       pfont = Phew::Font.new ctx, "Sans"
 
       test_string = "This is a test"
-      sum = pfont.coverage_summary test_string
+      summary = pfont.coverage_summary test_string
 
-      _(sum.keys.sort).must_equal [:none, :fallback, :approximate, :exact].sort
-      _(sum.values.inject(:+)).must_equal test_string.size
+      _(summary.keys.sort).must_equal [:none, :fallback, :approximate, :exact].sort
+      _(summary.values.sum).must_equal test_string.size
     end
   end
 end
