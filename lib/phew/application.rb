@@ -3,13 +3,25 @@
 require "gir_ffi-gtk3"
 
 require "phew/font_repository"
-require "phew/window"
 require "phew/script"
 require "phew/script_list"
 
 module Phew
   # Main Phew application.
   class Application
+    def initialize
+      @context = Gdk.pango_context_get
+      @font_repository = FontRepository.new @context
+      connect_signals
+      win.show_all
+    end
+
+    def run
+      Gtk.main
+    end
+
+    private
+
     def combo
       @combo ||= ScriptList.new.tap(&:fill)
     end
@@ -56,7 +68,7 @@ module Phew
     end
 
     def build_win
-      win = Window.new :toplevel
+      win = Gtk::Window.new :toplevel
       win.add vbox
       win
     end
@@ -67,7 +79,8 @@ module Phew
 
     # Set up all signal handlers
     def connect_signals
-      win.connect_signals
+      win.signal_connect("destroy") { on_destroy_event }
+      win.signal_connect("key-press-event") { |_, evt, _| on_key_press_event evt }
       combo.signal_connect("changed") { on_combo_changed_signal }
     end
 
@@ -78,11 +91,14 @@ module Phew
       fill_font_list script
     end
 
-    def initialize
-      @context = Gdk.pango_context_get
-      @font_repository = FontRepository.new @context
-      connect_signals
-      win.show_all
+    def on_destroy_event
+      Gtk.main_quit
+      false
+    end
+
+    def on_key_press_event(evt)
+      win.destroy if evt.state[:control_mask] && evt.keyval == "q".ord
+      false
     end
 
     def fill_font_list(script)
@@ -107,10 +123,6 @@ module Phew
       fontmap = @context.get_font_map
 
       fontmap.list_families
-    end
-
-    def run
-      Gtk.main
     end
   end
 end
