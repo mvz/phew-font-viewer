@@ -9,15 +9,16 @@ require "phew/script_list"
 module Phew
   # Main Phew application.
   class Application
-    def initialize
+    def initialize(gtk_application)
+      @gtk_application = gtk_application
       @context = Gdk.pango_context_get
       @font_repository = FontRepository.new @context
       connect_signals
-      win.show_all
     end
 
-    def run
-      Gtk.main
+    def present
+      win.show_all
+      win.present
     end
 
     private
@@ -68,7 +69,7 @@ module Phew
     end
 
     def build_win
-      win = Gtk::Window.new :toplevel
+      win = Gtk::ApplicationWindow.new @gtk_application
       win.add vbox
       win
     end
@@ -79,7 +80,6 @@ module Phew
 
     # Set up all signal handlers
     def connect_signals
-      win.signal_connect("destroy") { on_destroy_event }
       win.signal_connect("key-press-event") { |_, evt, _| on_key_press_event evt }
       combo.signal_connect("changed") { on_combo_changed_signal }
     end
@@ -89,11 +89,6 @@ module Phew
       # FIXME: Add override for Gtk::TextBuffer.set_text so #text= works properly
       textview.buffer.set_text script.sample_string, -1
       fill_font_list script
-    end
-
-    def on_destroy_event
-      Gtk.main_quit
-      false
     end
 
     def on_key_press_event(evt)

@@ -3,6 +3,11 @@
 
 require "phew"
 
-Gtk.init
+myapp = Gtk::Application.new("net.matijs.phew", { none: true })
 
-Phew::Application.new.run
+myapp.signal_connect "activate" do |app, _user_data|
+  @app ||= Phew::Application.new(app)
+  @app.present
+end
+
+exit(myapp.run([$PROGRAM_NAME] + ARGV))
