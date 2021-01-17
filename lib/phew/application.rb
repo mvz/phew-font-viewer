@@ -80,7 +80,6 @@ module Phew
 
     # Set up all signal handlers
     def connect_signals
-      win.signal_connect("key-press-event") { |_, evt, _| on_key_press_event evt }
       combo.signal_connect("changed") { on_combo_changed_signal }
     end
 
@@ -89,11 +88,6 @@ module Phew
       # FIXME: Add override for Gtk::TextBuffer.set_text so #text= works properly
       textview.buffer.set_text script.sample_string, -1
       fill_font_list script
-    end
-
-    def on_key_press_event(evt)
-      win.destroy if evt.state[:control_mask] && evt.keyval == "q".ord
-      false
     end
 
     def fill_font_list(script)

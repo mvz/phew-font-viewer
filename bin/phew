@@ -5,6 +5,14 @@ require "phew"
 
 myapp = Gtk::Application.new("net.matijs.phew", { none: true })
 
+myapp.signal_connect "startup" do |app|
+  action = Gio::SimpleAction.new("quit", nil)
+  action.signal_connect("activate") { app.quit }
+  myapp.add_action action
+
+  myapp.set_accels_for_action "app.quit", ["<Ctrl>Q"]
+end
+
 myapp.signal_connect "activate" do |app, _user_data|
   @app ||= Phew::Application.new(app)
   @app.present
