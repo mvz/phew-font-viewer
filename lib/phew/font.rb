@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "gir_ffi-pango"
+
 module Phew
   # Font family. Handles coverage, among other things.
   class Font
