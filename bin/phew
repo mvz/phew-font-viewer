@@ -11,6 +11,14 @@ myapp.signal_connect "startup" do |app|
   myapp.add_action action
 
   myapp.set_accels_for_action "app.quit", ["<Ctrl>Q"]
+
+  # Add menu so Atspi has a way to access the actions
+  menu = Gio::Menu.new
+  file_menu = Gio::Menu.new
+  file_menu.append "Quit", "app.quit"
+  menu.append_submenu "File", file_menu
+
+  myapp.menubar = menu
 end
 
 myapp.signal_connect "activate" do |app, _user_data|

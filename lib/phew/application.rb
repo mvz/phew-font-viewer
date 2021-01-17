@@ -18,6 +18,7 @@ module Phew
 
     def present
       win.show_all
+      win.children.first.visible = false if win.show_menubar
       win.present
     end
 
