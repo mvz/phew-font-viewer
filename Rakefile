@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require "rake/clean"
 require "bundler/gem_helper"
+require "rake/clean"
+require "rake/manifest/task"
 require "rake/testtask"
 
 Bundler::GemHelper.install_tasks
@@ -23,5 +24,11 @@ namespace :test do
 end
 
 task test: "test:all"
-
 task default: "test"
+
+Rake::Manifest::Task.new do |t|
+  t.patterns = ["{bin,lib}/**/*", "*.md", "COPYING"]
+end
+
+task build: "manifest:check"
+task default: "manifest:check"
