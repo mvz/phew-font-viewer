@@ -14,11 +14,7 @@ Gem::Specification.new do |s|
 
   s.license = "GPL-3"
 
-  s.files = Dir["{bin,lib,test,doc}/**/*",
-                "*.md",
-                "Gemfile",
-                "COPYING",
-                "Rakefile"] & `git ls-files -z`.split("\0")
+  s.files = File.read("Manifest.txt").split
 
   s.require_paths << "lib"
   s.bindir = "bin"
@@ -32,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("minitest", ["~> 5.12"])
   s.add_development_dependency("pry", "~> 0.14.0")
   s.add_development_dependency("rake", ["~> 13.0"])
+  s.add_development_dependency("rake-manifest", "~> 0.2.0")
   s.add_development_dependency("rubocop", "~> 1.21.0")
   s.add_development_dependency("rubocop-minitest", "~> 0.15.0")
   s.add_development_dependency("rubocop-performance", "~> 1.11.0")
