@@ -14,6 +14,8 @@ Gem::Specification.new do |spec|
 
   spec.license = "GPL-3"
 
+  spec.metadata["rubygems_mfa_required"] = "true"
+
   spec.files = File.read("Manifest.txt").split
 
   spec.require_paths << "lib"
