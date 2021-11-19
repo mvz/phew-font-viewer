@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+require_relative "lib/phew/version"
+
 Gem::Specification.new do |spec|
   spec.name = "phew"
-  spec.version = "0.0.5"
-
+  spec.version = Phew::VERSION
   spec.authors = ["Matijs van Zuijlen"]
   spec.email = ["matijs@matijs.net"]
 
@@ -17,10 +18,9 @@ Gem::Specification.new do |spec|
   spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = File.read("Manifest.txt").split
-
-  spec.require_paths << "lib"
   spec.bindir = "bin"
-  spec.executables << "phew"
+  spec.executables = ["phew"]
+  spec.require_paths << "lib"
 
   spec.rdoc_options = ["--main", "README.md"]
 
