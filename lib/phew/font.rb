@@ -25,7 +25,7 @@ module Phew
       lang = Pango::Language.new
       cov = @font.get_coverage lang
       text_cov = text.each_codepoint.map { |cp| cov.get cp }
-      Pango::CoverageLevel::Enum.symbols.map { |lvl| [lvl, text_cov.count(lvl)] }.to_h
+      Pango::CoverageLevel::Enum.symbols.to_h { |lvl| [lvl, text_cov.count(lvl)] }
     end
   end
 end
