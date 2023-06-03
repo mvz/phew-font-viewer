@@ -24,15 +24,16 @@ Gem::Specification.new do |spec|
 
   spec.rdoc_options = ["--main", "README.md"]
 
-  spec.add_runtime_dependency("gir_ffi-gtk", "~> 0.16.0")
-  spec.add_runtime_dependency("gir_ffi-pango", "0.0.16")
+  spec.add_runtime_dependency "gir_ffi-gtk", "~> 0.16.0"
+  spec.add_runtime_dependency "gir_ffi-pango", "0.0.16"
 
-  spec.add_development_dependency("atspi_app_driver", "~> 0.8.0")
-  spec.add_development_dependency("minitest", ["~> 5.12"])
-  spec.add_development_dependency("pry", "~> 0.14.0")
-  spec.add_development_dependency("rake", ["~> 13.0"])
-  spec.add_development_dependency("rake-manifest", "~> 0.2.0")
-  spec.add_development_dependency("rubocop", "~> 1.25")
-  spec.add_development_dependency("rubocop-minitest", "~> 0.31.0")
-  spec.add_development_dependency("rubocop-performance", "~> 1.13")
+  spec.add_development_dependency "atspi_app_driver", "~> 0.8.0"
+  spec.add_development_dependency "minitest", "~> 5.12"
+  spec.add_development_dependency "pry", "~> 0.14.0"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "rake-manifest", "~> 0.2.0"
+  spec.add_development_dependency "rubocop", "~> 1.52"
+  spec.add_development_dependency "rubocop-minitest", "~> 0.31.0"
+  spec.add_development_dependency "rubocop-packaging", "~> 0.5.2"
+  spec.add_development_dependency "rubocop-performance", "~> 1.18"
 end
