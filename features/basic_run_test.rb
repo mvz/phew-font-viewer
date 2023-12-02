@@ -7,7 +7,7 @@ require "atspi_app_driver"
 class PhewDriver < AtspiAppDriver
   def initialize
     verbose = ENV["VERBOSE"] == "true"
-    super "phew", verbose: verbose
+    super("phew", verbose: verbose)
   end
 end
 
