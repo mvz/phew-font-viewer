@@ -27,6 +27,8 @@ Tentatively, there would be a filtering system, and we would have two
 lists of fonts that satisfy the filters, namely those that have been
 selected (the default state), and those that have been rejected.
 
+For an online tool that does what I want, see [Wakamai Fondue](https://wakamaifondue.com/).
+
 ## License
 
 Copyright (c) 2012, 2015-2024 Matijs van Zuijlen
