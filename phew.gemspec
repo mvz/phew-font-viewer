@@ -11,10 +11,11 @@ Gem::Specification.new do |spec|
   spec.summary = "A GNOME Font Viewer"
   spec.description = "List and compare installed fonts on GNOME"
   spec.homepage = "http://www.github.com/mvz/phew-font-viewer"
+
   spec.license = "GPL-3"
+  spec.required_ruby_version = ">= 3.1.0"
 
-  spec.required_ruby_version = ">= 3.0.0"
-
+  spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = File.read("Manifest.txt").split
