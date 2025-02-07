@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.rdoc_options = ["--main", "README.md"]
 
-  spec.add_dependency "gir_ffi-gtk", "~> 0.17.0"
+  spec.add_dependency "gir_ffi-gtk", ">= 0.17", "< 0.19"
   spec.add_dependency "gir_ffi-pango", "0.0.17"
 
   spec.add_development_dependency "atspi_app_driver", "~> 0.9.0"
