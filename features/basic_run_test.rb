@@ -22,6 +22,7 @@ describe "The Phew application" do
     frame.find_role(:menu_item, /Quit/).do_action 0
 
     status = @driver.cleanup
+
     _(status.exitstatus).must_equal 0
   end
 
@@ -31,14 +32,17 @@ describe "The Phew application" do
     box = frame.find_role :combo_box
 
     latin = box.find_role :menu_item, /latin/
+
     _(latin).wont_be_nil
 
     textbox = frame.find_role :text
+
     _(textbox).wont_be_nil
     _(textbox.get_text(0, 100)).must_equal ""
 
     _(box.get_action_name(0)).must_equal "press"
     box.do_action 0
+
     _(latin.get_action_name(0)).must_equal "click"
     latin.do_action 0
 
@@ -46,6 +50,7 @@ describe "The Phew application" do
 
     frame.find_role(:menu_item, /Quit/).do_action 0
     status = @driver.cleanup
+
     _(status.exitstatus).must_equal 0
   end
 
