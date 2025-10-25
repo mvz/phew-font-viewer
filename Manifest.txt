@@ -6,5 +6,6 @@ lib/phew/font_repository.rb
 lib/phew/script.rb
 lib/phew/script_list.rb
 lib/phew/version.rb
+CHANGELOG.md
 README.md
 COPYING
